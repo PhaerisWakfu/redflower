@@ -41,6 +41,18 @@
     color: var(--primary);
 }
 
+.kid-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.kid-header-avatar {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
 .header-actions {
     display: flex;
     gap: 0.5rem;

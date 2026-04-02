@@ -187,3 +187,133 @@
     color: var(--text-muted);
     font-size: 0.9rem;
 }
+
+/* ── 小孩编辑行 ── */
+.kid-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.avatar-picker-inline {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.avatar-option-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-warm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.15s;
+}
+
+.avatar-option-sm:hover {
+    border-color: var(--secondary-light);
+}
+
+.avatar-option-sm.selected {
+    border-color: var(--secondary);
+    background: var(--secondary-light);
+}
+
+.edit-name-input {
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--text-main);
+    outline: none;
+    flex: 1;
+    min-width: 80px;
+    font-family: inherit;
+}
+
+.edit-name-input:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(106, 143, 130, 0.12);
+}
+
+/* ── 添加小朋友弹窗（管理面板内） ── */
+.add-kid-form-admin {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-field-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-field-admin label {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-main);
+}
+
+.form-field-admin input {
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    background: #fff;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.form-field-admin input:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(106, 143, 130, 0.12);
+}
+
+.avatar-picker-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.avatar-option-admin {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-warm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.avatar-option-admin:hover {
+    border-color: var(--secondary-light);
+    transform: scale(1.08);
+}
+
+.avatar-option-admin.selected {
+    border-color: var(--secondary);
+    background: var(--secondary-light);
+    box-shadow: 0 0 0 2px rgba(106, 143, 130, 0.2);
+}
+
+.form-actions-admin {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-end;
+}

@@ -1,10 +1,18 @@
 import React from 'react';
-import type { Task } from '../lib/storage';
 import { CheckCircle, Circle, Flower } from 'lucide-react';
 import './TaskItem.css';
 
+interface EnrichedTask {
+    id: string;
+    title: string;
+    flowers: number;
+    type: 'daily' | 'one-time';
+    completed: boolean;
+    completedAt?: number;
+}
+
 interface TaskItemProps {
-    task: Task;
+    task: EnrichedTask;
     onComplete: (id: string) => void;
 }
 
@@ -37,4 +45,4 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onComplete }) => {
             </div>
         </div>
     );
-}
+};

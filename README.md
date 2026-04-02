@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+# 🌸 小红花 — 儿童奖励管理系统
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一个面向家长和孩子的趣味化任务奖励管理工具。通过"小红花"积分机制，帮助孩子养成好习惯，同时让家长轻松管理多个孩子的日常表现。
 
-Currently, two official plugins are available:
+## ✨ 功能亮点
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 👶 多小孩管理
+- 支持添加多个小朋友，每人独立的小红花余额和历史记录
+- 可自定义头像（emoji）和昵称
+- 选择小朋友后进入各自的专属面板
 
-## React Compiler
+### 📋 任务系统
+- **每日任务**：每天早上 8 点自动重置，可重复完成
+- **一次性任务**：特殊奖励，完成后不再出现
+- 每完成一个任务就获得对应数量的小红花 🌸
+- 完成时带有漂亮的粒子动画特效
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎁 奖品兑换超市
+- 家长设置奖品清单和兑换价格
+- 小朋友用积攒的小红花自助兑换
+- 兑换后生成精美的"兑换凭证"卡片，可以展示给家长
 
-## Expanding the ESLint configuration
+### 🔒 家长管理面板
+- **家长锁**：4位 PIN 密码保护，防止小朋友误操作
+- **小孩管理**：添加、编辑、删除小朋友
+- **任务管理**：自定义任务内容、类型和奖励花数
+- **奖品管理**：自定义奖品名称、图标和花费
+- **手动调账**：直接增减指定小朋友的小红花
+- **修改密码**：可随时修改家长 PIN 码
+- **全站重置**：一键恢复出厂设置（需二次确认）
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠 技术栈
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 19** + **TypeScript**
+- **Vite** — 极速开发和构建
+- **Lucide React** — 精美的图标库
+- **LocalStorage** — 本地数据持久化，无需服务器
+- **Vanilla CSS** — 手工感设计风格（陶土红 + 松石绿 + 蜂蜜黄）
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 快速开始
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 安装依赖
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 启动开发服务器
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+浏览器打开 `http://localhost:5173` 即可使用。
+
+### 构建生产版本
+
+```bash
+npm run build
+```
+
+构建产物输出到 `dist/` 目录。
+
+## 📁 项目结构
+
+```
+src/
+├── lib/
+│   └── storage.ts          # 数据模型 & LocalStorage 持久化
+├── hooks/
+│   └── useAppData.ts       # 核心业务逻辑 Hook
+├── pages/
+│   ├── KidSelector.tsx     # 小孩选择页面
+│   ├── KidDashboard.tsx    # 小孩任务面板
+│   └── ParentAdmin.tsx     # 家长管理面板
+├── components/
+│   ├── TaskItem.tsx        # 任务卡片组件
+│   └── RewardCard.tsx      # 奖品卡片组件
+├── App.tsx                 # 应用入口 & 路由
+└── index.css               # 全局样式 & 设计系统
+```
+
+## 📝 使用指南
+
+1. **首次打开**：点击"添加小朋友"创建第一个小朋友
+2. **小朋友视角**：点击任务完成打卡 → 获得小红花 → 去超市兑换奖品
+3. **家长操作**：点击"家长管理" → 输入密码（默认 `1234`） → 管理任务/奖品/小孩
+4. **修改密码**：进入家长面板后点击"修改密码"，设置新的4位密码
+
+## 📄 许可证
+
+MIT

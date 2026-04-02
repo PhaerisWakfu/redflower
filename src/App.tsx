@@ -1,34 +1,65 @@
 import React, { useState } from 'react';
+import { KidSelector } from './pages/KidSelector';
 import { KidDashboard } from './pages/KidDashboard';
 import { ParentAdmin } from './pages/ParentAdmin';
+import { useAppData } from './hooks/useAppData';
 
 function App() {
+  const { data } = useAppData();
+  const [selectedKidId, setSelectedKidId] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [pinDialog, setPinDialog] = useState(false);
   const [pinCode, setPinCode] = useState('');
+  const [pinError, setPinError] = useState(false);
 
   const handleAdminLogin = () => {
     setPinDialog(true);
+    setPinError(false);
   };
 
   const verifyPin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinCode === '1234') {
+    if (pinCode === data.pin) {
       setIsAdmin(true);
       setPinDialog(false);
       setPinCode('');
+      setPinError(false);
     } else {
-      alert('密码错误 (默认密码: 1234)');
+      setPinError(true);
+      setPinCode('');
     }
+  };
+
+  const handleBackFromAdmin = () => {
+    setIsAdmin(false);
+    setSelectedKidId(null);
+  };
+
+  const isDefaultPin = data.pin === '1234';
+
+  let content: React.ReactNode;
+
+  if (isAdmin) {
+    content = <ParentAdmin onBack={handleBackFromAdmin} />;
+  } else if (selectedKidId) {
+    content = (
+      <KidDashboard
+        kidId={selectedKidId}
+        onBack={() => setSelectedKidId(null)}
+      />
+    );
+  } else {
+    content = (
+      <KidSelector
+        onSelectKid={setSelectedKidId}
+        onAdminLogin={handleAdminLogin}
+      />
+    );
   }
 
   return (
     <>
-      {isAdmin ? (
-        <ParentAdmin onBack={() => setIsAdmin(false)} />
-      ) : (
-        <KidDashboard onAdminLogin={handleAdminLogin} />
-      )}
+      {content}
 
       {pinDialog && (
         <div className="modal-overlay" onClick={() => setPinDialog(false)}>
@@ -39,13 +70,18 @@ function App() {
             <form onSubmit={verifyPin} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                 <label style={{ fontWeight: 600, fontSize: '0.92rem' }}>请输入4位家长密码</label>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>默认密码: 1234</p>
+                {isDefaultPin && (
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>默认密码: 1234</p>
+                )}
+                {pinError && (
+                  <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600 }}>密码错误，请重试</p>
+                )}
               </div>
               <input
                 type="password"
                 value={pinCode}
-                onChange={e => setPinCode(e.target.value)}
-                style={{ padding: '0.8rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', fontSize: '1.3rem', textAlign: 'center', letterSpacing: '0.4em', fontFamily: 'inherit' }}
+                onChange={e => { setPinCode(e.target.value); setPinError(false); }}
+                style={{ padding: '0.8rem', borderRadius: 'var(--radius-sm)', border: `1px solid ${pinError ? 'var(--primary)' : 'var(--border-color)'}`, fontSize: '1.3rem', textAlign: 'center', letterSpacing: '0.4em', fontFamily: 'inherit' }}
                 autoFocus
                 maxLength={4}
               />
