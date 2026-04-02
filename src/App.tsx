@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { KidSelector } from './pages/KidSelector';
 import { KidDashboard } from './pages/KidDashboard';
 import { ParentAdmin } from './pages/ParentAdmin';
-import { useAppData } from './hooks/useAppData';
+import { storage } from './lib/storage';
 
 function App() {
-  const { data } = useAppData();
   const [selectedKidId, setSelectedKidId] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [pinDialog, setPinDialog] = useState(false);
@@ -19,7 +18,8 @@ function App() {
 
   const verifyPin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinCode === data.pin) {
+    const currentPin = storage.getData().pin;
+    if (pinCode === currentPin) {
       setIsAdmin(true);
       setPinDialog(false);
       setPinCode('');
@@ -35,7 +35,7 @@ function App() {
     setSelectedKidId(null);
   };
 
-  const isDefaultPin = data.pin === '1234';
+  const isDefaultPin = storage.getData().pin === '1234';
 
   let content: React.ReactNode;
 
