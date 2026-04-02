@@ -317,3 +317,265 @@
     gap: 0.6rem;
     justify-content: flex-end;
 }
+
+/* ── 奖励按钮 ── */
+.btn-reward {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #b85c4e;
+    background: linear-gradient(135deg, #fff5f3, #fde8e4);
+    border: 1px solid #f0c4bc;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-reward:hover {
+    background: linear-gradient(135deg, #fde8e4, #f8d4cd);
+    border-color: #e8a99f;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(200, 107, 94, 0.15);
+}
+
+/* ── 调账弹窗 ── */
+.adjust-dialog {
+    max-width: 420px;
+    width: 90vw;
+}
+
+.adjust-dialog-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.adjust-amount-section label,
+.adjust-reason-section label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-main);
+    margin-bottom: 0.6rem;
+}
+
+.adjust-amount-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.adjust-amount-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: var(--bg-warm);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 1.2rem;
+}
+
+.adjust-amount-btn:hover {
+    border-color: var(--secondary);
+    background: var(--secondary-light);
+    transform: scale(1.08);
+}
+
+.adjust-amount-btn:active {
+    transform: scale(0.95);
+}
+
+.adjust-amount-display {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    min-width: 80px;
+    justify-content: center;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-sm);
+    transition: color 0.2s;
+}
+
+.adjust-amount-display.positive {
+    color: #4a9e6e;
+}
+
+.adjust-amount-display.negative {
+    color: #c96b5e;
+}
+
+.adjust-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+}
+
+.adjust-preset-tag {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background: var(--bg-warm);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.adjust-preset-tag:hover {
+    border-color: var(--secondary);
+    background: var(--secondary-light);
+    transform: translateY(-1px);
+}
+
+.adjust-preset-tag.selected {
+    border-color: var(--secondary);
+    background: var(--secondary);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(106, 143, 130, 0.25);
+}
+
+.adjust-reason-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    background: #fff;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.adjust-reason-input:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(106, 143, 130, 0.12);
+}
+
+.adjust-reason-input::placeholder {
+    color: var(--text-light);
+}
+
+/* ── 育儿小贴士 ── */
+.parenting-tips {
+    margin-top: 1.5rem;
+    padding: 0;
+    overflow: hidden;
+}
+
+.tips-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: background 0.15s;
+}
+
+.tips-toggle:hover {
+    background: var(--bg-warm);
+}
+
+.tips-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tips-chevron {
+    transition: transform 0.2s ease;
+    color: var(--text-muted);
+}
+
+.tips-chevron.open {
+    transform: rotate(180deg);
+}
+
+.tips-content {
+    padding: 0 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.tip-card {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+}
+
+.tip-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.tip-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 0.4rem;
+    color: var(--text-main);
+}
+
+.tip-card .tip-advice {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+.tip-task {
+    background: linear-gradient(135deg, #f5f9f7, #edf5f1);
+    border-color: #d5e5dd;
+}
+
+.tip-task .tip-advice {
+    background: rgba(106, 143, 130, 0.08);
+}
+
+.tip-shining {
+    background: linear-gradient(135deg, #fffbf5, #fef6ed);
+    border-color: #f0e4d4;
+}
+
+.tip-shining .tip-advice {
+    background: rgba(212, 165, 90, 0.08);
+}
+
+.tips-summary {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+    padding: 0.5rem 0 0;
+    margin: 0;
+}

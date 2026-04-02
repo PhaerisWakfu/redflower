@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import type { Task, Reward } from '../lib/storage';
-import { ArrowLeft, Plus, Trash2, Flower, Pencil, Lock } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Flower, Pencil, Lock, Heart, Minus, ChevronDown, Lightbulb } from 'lucide-react';
 import './ParentAdmin.css';
+
+const PRESET_REASONS = [
+    { emoji: '🌸', text: '今天很有礼貌' },
+    { emoji: '💪', text: '主动帮助他人' },
+    { emoji: '🧸', text: '主动分享了玩具' },
+    { emoji: '💖', text: '做了一件暖心的事' },
+    { emoji: '📖', text: '自觉看书学习' },
+    { emoji: '🍽️', text: '吃饭不挑食' },
+    { emoji: '🧹', text: '主动整理房间' },
+    { emoji: '😊', text: '情绪控制得很好' },
+];
 
 interface Props {
     onBack: () => void;
@@ -32,6 +43,16 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
     const [editingKidId, setEditingKidId] = useState<string | null>(null);
     const [editName, setEditName] = useState('');
     const [editAvatar, setEditAvatar] = useState('');
+
+    // Adjust dialog
+    const [showAdjustDialog, setShowAdjustDialog] = useState(false);
+    const [adjustKidId, setAdjustKidId] = useState('');
+    const [adjustKidName, setAdjustKidName] = useState('');
+    const [adjustAmount, setAdjustAmount] = useState(1);
+    const [adjustReason, setAdjustReason] = useState('');
+
+    // Parenting tips
+    const [showTips, setShowTips] = useState(false);
 
     const addTask = () => {
         if (!newTask.title) return;
@@ -94,12 +115,18 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
     };
 
     const handleManualAdjust = (kidId: string, kidName: string) => {
-        const amountStr = prompt(`为「${kidName}」调整小红花数量（扣除请填负数，如 -5）：`);
-        if (!amountStr) return;
-        const amount = parseInt(amountStr);
-        if (!isNaN(amount) && amount !== 0) {
-            manualAdjust(kidId, amount);
-        }
+        setAdjustKidId(kidId);
+        setAdjustKidName(kidName);
+        setAdjustAmount(1);
+        setAdjustReason('');
+        setShowAdjustDialog(true);
+    };
+
+    const submitAdjust = () => {
+        if (adjustAmount === 0) return;
+        const reason = adjustReason.trim() || (adjustAmount > 0 ? '家长奖励小红花' : '家长扣除小红花');
+        manualAdjust(adjustKidId, adjustAmount, reason);
+        setShowAdjustDialog(false);
     };
 
     const handleResetData = () => {
@@ -227,11 +254,11 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
                                             </div>
                                             <div style={{ display: 'flex', gap: '0.3rem' }}>
                                                 <button
-                                                    className="btn-secondary icon-btn"
+                                                    className="btn-reward icon-btn"
                                                     onClick={() => handleManualAdjust(kid.id, kid.name)}
-                                                    title="手动调账"
+                                                    title="奖励/调整小红花"
                                                 >
-                                                    调账
+                                                    <Heart size={14} /> 奖励
                                                 </button>
                                                 <button
                                                     className="icon-btn btn-secondary"
@@ -367,6 +394,30 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
                 )}
             </div>
 
+            <div className={`parenting-tips glass-panel ${showTips ? 'expanded' : ''}`}>
+                <button className="tips-toggle" onClick={() => setShowTips(!showTips)}>
+                    <span className="tips-toggle-label">
+                        <Lightbulb size={16} /> 育儿小贴士：任务 vs 闪光奖励
+                    </span>
+                    <ChevronDown size={16} className={`tips-chevron ${showTips ? 'open' : ''}`} />
+                </button>
+                {showTips && (
+                    <div className="tips-content">
+                        <div className="tip-card tip-task">
+                            <h4>🎯 任务模式：培养新习惯的“练习轮”</h4>
+                            <p>适合孩子还没有形成某个习惯时使用，比如刚开始学习自己整理书包、每天阅读。明确的任务和即时反馈能帮助孩子建立行为框架。</p>
+                            <p className="tip-advice">✨ <strong>小贴士</strong>：当孩子已经能自觉完成某件事时，及时从任务里移除它，让它变成“理所当然”而不是“为了奖励”。需要避免孩子产生“没奖励就不做”的心态。</p>
+                        </div>
+                        <div className="tip-card tip-shining">
+                            <h4>✨ 闪光奖励：发现孩子的“宝藏时刻”</h4>
+                            <p>当你随机看到孩子的好行为时，随手奖励几朵小红花。孩子不知道什么时候会得到奖励，因此不会“为了嬌花而表演”，而是自然地做自己。</p>
+                            <p className="tip-advice">🌱 <strong>小贴士</strong>：心理学研究表明，不可预测的正面反馈是最持久的激励方式。孩子会因为“被看见”而建立内在自驱力。</p>
+                        </div>
+                        <p className="tips-summary">💡 两种方式可以同时使用：用任务培养新习惯，用闪光奖励肯定好行为。当习惯已经养成，就从任务里移除，留给孩子自由生长的空间。</p>
+                    </div>
+                )}
+            </div>
+
             {showAddKid && (
                 <div className="modal-overlay" onClick={() => setShowAddKid(false)}>
                     <div className="modal-content glass-panel" style={{ maxWidth: '380px' }} onClick={(e) => e.stopPropagation()}>
@@ -468,6 +519,79 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {showAdjustDialog && (
+                <div className="modal-overlay" onClick={() => setShowAdjustDialog(false)}>
+                    <div className="modal-content glass-panel adjust-dialog" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>🌸 {adjustKidName} — 小红花调整</h2>
+                        </div>
+                        <div className="adjust-dialog-body">
+                            <div className="adjust-amount-section">
+                                <label>调整数量</label>
+                                <div className="adjust-amount-row">
+                                    <button
+                                        type="button"
+                                        className="adjust-amount-btn"
+                                        onClick={() => setAdjustAmount((v) => v - 1)}
+                                    >
+                                        <Minus size={18} />
+                                    </button>
+                                    <div className={`adjust-amount-display ${adjustAmount < 0 ? 'negative' : 'positive'}`}>
+                                        <span>{adjustAmount > 0 ? '+' : ''}{adjustAmount}</span>
+                                        <Flower size={16} color="#c96b5e" fill="#e8a99f" />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="adjust-amount-btn"
+                                        onClick={() => setAdjustAmount((v) => v + 1)}
+                                    >
+                                        <Plus size={18} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="adjust-reason-section">
+                                <label>理由（孩子可以看见哦~）</label>
+                                <div className="adjust-presets">
+                                    {PRESET_REASONS.map((p) => (
+                                        <button
+                                            key={p.text}
+                                            type="button"
+                                            className={`adjust-preset-tag ${adjustReason === p.text ? 'selected' : ''}`}
+                                            onClick={() => setAdjustReason(adjustReason === p.text ? '' : p.text)}
+                                        >
+                                            {p.emoji} {p.text}
+                                        </button>
+                                    ))}
+                                </div>
+                                <input
+                                    type="text"
+                                    className="adjust-reason-input"
+                                    placeholder="或者输入自定义理由..."
+                                    value={adjustReason}
+                                    onChange={(e) => setAdjustReason(e.target.value)}
+                                    maxLength={30}
+                                />
+                            </div>
+
+                            <div className="form-actions-admin">
+                                <button type="button" className="btn-secondary" onClick={() => setShowAdjustDialog(false)}>
+                                    取消
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn-primary"
+                                    onClick={submitAdjust}
+                                    disabled={adjustAmount === 0}
+                                >
+                                    确认{adjustAmount >= 0 ? '奖励' : '扣除'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { TaskItem } from '../components/TaskItem';
 import { RewardCard } from '../components/RewardCard';
-import { Flower, History, ArrowLeft } from 'lucide-react';
+import { Flower, History, ArrowLeft, Sparkles } from 'lucide-react';
 import './KidDashboard.css';
 
 interface Props {
@@ -51,6 +51,24 @@ export const KidDashboard: React.FC<Props> = ({ kidId, onBack }) => {
     const completedCount = enrichedTasks.filter((t) => t.completed && t.type === 'daily').length;
     const dailyCount = enrichedTasks.filter((t) => t.type === 'daily').length;
     const progress = dailyCount === 0 ? 0 : (completedCount / dailyCount) * 100;
+    const hasTasks = data.tasks.length > 0;
+
+    // Shining moments: earn entries that are NOT from task completion
+    const shiningEntries = kid.history
+        .filter((e) => e.type === 'earn' && !e.description.startsWith('完成任务:'))
+        .slice(0, 10);
+
+    const formatRelativeTime = (timestamp: number) => {
+        const diff = Date.now() - timestamp;
+        const minutes = Math.floor(diff / 60000);
+        if (minutes < 1) return '刚刚';
+        if (minutes < 60) return `${minutes}分钟前`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours}小时前`;
+        const days = Math.floor(hours / 24);
+        if (days < 7) return `${days}天前`;
+        return new Date(timestamp).toLocaleDateString();
+    };
 
     return (
         <div className="kid-dashboard animate-slide-up">
@@ -85,25 +103,53 @@ export const KidDashboard: React.FC<Props> = ({ kidId, onBack }) => {
             </header>
 
             <div className="dashboard-content">
-                <section className="task-section">
-                    <div className="section-header">
-                        <h3>任务清单</h3>
-                        <span className="progress-text">
-                            {completedCount} / {dailyCount}
-                        </span>
-                    </div>
-                    <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-                    </div>
+                {hasTasks && (
+                    <section className="task-section">
+                        <div className="section-header">
+                            <h3>📋 任务清单</h3>
+                            <span className="progress-text">
+                                {completedCount} / {dailyCount}
+                            </span>
+                        </div>
+                        <div className="progress-bar">
+                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                        </div>
 
-                    <div className="task-list">
-                        {enrichedTasks.map((task) => (
-                            <div key={task.id} onClick={(e) => handleTaskComplete(task.id, e)}>
-                                <TaskItem task={task} onComplete={() => { }} />
-                            </div>
-                        ))}
-                        {enrichedTasks.length === 0 && <p className="empty-hint">暂无任务，休息一下吧！</p>}
+                        <div className="task-list">
+                            {enrichedTasks.map((task) => (
+                                <div key={task.id} onClick={(e) => handleTaskComplete(task.id, e)}>
+                                    <TaskItem task={task} onComplete={() => { }} />
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                <section className="shining-section">
+                    <div className="section-header">
+                        <h3><Sparkles size={16} className="shining-icon" /> 闪光时刻</h3>
                     </div>
+                    {shiningEntries.length > 0 ? (
+                        <div className="shining-list">
+                            {shiningEntries.map((entry) => (
+                                <div key={entry.id} className="shining-card">
+                                    <div className="shining-card-content">
+                                        <span className="shining-desc">{entry.description}</span>
+                                        <span className="shining-time">{formatRelativeTime(entry.date)}</span>
+                                    </div>
+                                    <div className="shining-flowers">
+                                        +{entry.amount} <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="shining-empty">
+                            <div className="shining-empty-icon">✨</div>
+                            <p>每一个好行为都值得被看见</p>
+                            <p className="shining-empty-sub">爸爸妈妈会在这里记录你的闪光时刻哦</p>
+                        </div>
+                    )}
                 </section>
 
                 <section className="reward-section">
