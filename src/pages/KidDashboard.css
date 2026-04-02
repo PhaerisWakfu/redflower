@@ -1,0 +1,374 @@
+.kid-dashboard {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+    width: 100%;
+}
+
+/* ── 顶栏 ── */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.balance-section h2 {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+}
+
+.balance-display {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-main);
+}
+
+.flower-icon {
+    animation: float 4s ease-in-out infinite;
+}
+
+.balance-number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.82rem;
+}
+
+/* ── 内容区 ── */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .kid-dashboard {
+        max-width: 800px;
+    }
+
+    .dashboard-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ── 章节标题 ── */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.8rem;
+    padding: 0 0.2rem;
+}
+
+.section-header h3 {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    font-weight: 700;
+    position: relative;
+}
+
+.section-header h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 24px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+/* ── 进度条 ── */
+.progress-bar {
+    height: 6px;
+    background: var(--bg-warm);
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--secondary);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* ── 奖品网格 ── */
+.reward-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.8rem;
+}
+
+.empty-hint {
+    text-align: center;
+    color: var(--text-light);
+    padding: 2rem 1rem;
+    background: var(--bg-warm);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-color);
+    font-size: 0.9rem;
+}
+
+/* ── 弹窗 ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(60, 50, 40, 0.35);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.15s ease-out;
+    padding: 1rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 420px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 1.05rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ── 历史记录 ── */
+.history-list {
+    padding: 0.5rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--bg-warm);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.history-desc {
+    font-weight: 500;
+    font-size: 0.92rem;
+}
+
+.history-date {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.history-amount {
+    font-weight: 700;
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.history-amount.earn {
+    color: var(--secondary);
+}
+
+.history-amount.spend {
+    color: var(--primary);
+}
+
+/* ── 完成特效 ── */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.6rem;
+    z-index: 9999;
+}
+
+.particle.flower {
+    animation: floatUp 1.2s ease-out forwards;
+}
+
+.particle.confetti {
+    animation: popScale 1.2s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, -50%) scale(0.6);
+        opacity: 1;
+    }
+
+    60% {
+        transform: translate(-50%, -120px) scale(1.2) rotate(15deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -160px) scale(0.9) rotate(30deg);
+        opacity: 0;
+    }
+}
+
+@keyframes popScale {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 1;
+    }
+
+    35% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+}
+
+/* ── 兑换凭证 ── */
+.ticket-overlay {
+    background: rgba(250, 246, 241, 0.9);
+}
+
+.ticket-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    max-width: 300px;
+    width: 88%;
+    box-shadow: var(--shadow-lifted);
+    position: relative;
+    border: 1.5px solid var(--border-color);
+}
+
+.ticket-card::before,
+.ticket-card::after {
+    content: '';
+    position: absolute;
+    top: 58%;
+    width: 20px;
+    height: 20px;
+    background: var(--bg-color);
+    border-radius: 50%;
+    border: 1.5px solid var(--border-color);
+}
+
+.ticket-card::before {
+    left: -12px;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.ticket-card::after {
+    right: -12px;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.ticket-sparkles {
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.ticket-card h2 {
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.ticket-emoji {
+    font-size: 3.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.ticket-card h3 {
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+}
+
+.ticket-cost {
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+.ticket-divider {
+    border-top: 1.5px dashed var(--border-color);
+    margin: 1.5rem 0;
+}
+
+.ticket-footer {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+}
