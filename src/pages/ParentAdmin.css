@@ -346,6 +346,7 @@
 .adjust-dialog {
     max-width: 420px;
     width: 90vw;
+    margin-top: 10vh;
 }
 
 .adjust-dialog-body {
@@ -353,8 +354,6 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    overflow-y: auto;
-    min-height: 0;
 }
 
 .adjust-amount-section label,

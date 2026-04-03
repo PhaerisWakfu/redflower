@@ -166,256 +166,258 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
     };
 
     return (
-        <div className="parent-admin animate-slide-up">
-            <header className="admin-header glass-panel">
-                <button className="btn-secondary icon-btn" onClick={onBack}>
-                    <ArrowLeft size={20} /> 返回主页
-                </button>
-                <h2>家长管理面板</h2>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="btn-secondary icon-btn" onClick={() => { setShowPinDialog(true); setPinMsg(''); }}>
-                        <Lock size={16} /> 修改密码
+        <>
+            <div className="parent-admin animate-slide-up">
+                <header className="admin-header glass-panel">
+                    <button className="btn-secondary icon-btn" onClick={onBack}>
+                        <ArrowLeft size={20} /> 返回主页
                     </button>
-                    <button className="btn-danger" onClick={handleResetData}>
-                        全站重置
+                    <h2>家长管理面板</h2>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button className="btn-secondary icon-btn" onClick={() => { setShowPinDialog(true); setPinMsg(''); }}>
+                            <Lock size={16} /> 修改密码
+                        </button>
+                        <button className="btn-danger" onClick={handleResetData}>
+                            全站重置
+                        </button>
+                    </div>
+                </header>
+
+                <div className="admin-tabs">
+                    <button className={`tab-btn ${activeTab === 'kids' ? 'active' : ''}`} onClick={() => setActiveTab('kids')}>
+                        小朋友管理
+                    </button>
+                    <button className={`tab-btn ${activeTab === 'tasks' ? 'active' : ''}`} onClick={() => setActiveTab('tasks')}>
+                        任务管理
+                    </button>
+                    <button className={`tab-btn ${activeTab === 'rewards' ? 'active' : ''}`} onClick={() => setActiveTab('rewards')}>
+                        奖品管理
                     </button>
                 </div>
-            </header>
 
-            <div className="admin-tabs">
-                <button className={`tab-btn ${activeTab === 'kids' ? 'active' : ''}`} onClick={() => setActiveTab('kids')}>
-                    小朋友管理
-                </button>
-                <button className={`tab-btn ${activeTab === 'tasks' ? 'active' : ''}`} onClick={() => setActiveTab('tasks')}>
-                    任务管理
-                </button>
-                <button className={`tab-btn ${activeTab === 'rewards' ? 'active' : ''}`} onClick={() => setActiveTab('rewards')}>
-                    奖品管理
-                </button>
-            </div>
-
-            <div className="admin-content glass-panel">
-                {activeTab === 'kids' && (
-                    <div className="admin-section">
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                            <button className="btn-primary form-btn" onClick={() => setShowAddKid(true)}>
-                                <Plus size={18} />添加小朋友
-                            </button>
-                        </div>
-                        <div className="list-view">
-                            {data.kids.map((kid) => (
-                                <div key={kid.id} className="list-item">
-                                    {editingKidId === kid.id ? (
-                                        <div className="kid-edit-row">
-                                            <div className="avatar-picker-inline">
-                                                {AVATAR_OPTIONS.slice(0, 6).map((av) => (
-                                                    <button
-                                                        key={av}
-                                                        type="button"
-                                                        className={`avatar-option-sm ${editAvatar === av ? 'selected' : ''}`}
-                                                        onClick={() => setEditAvatar(av)}
-                                                    >
-                                                        {av}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={editName}
-                                                onChange={(e) => setEditName(e.target.value)}
-                                                className="edit-name-input"
-                                                maxLength={10}
-                                            />
-                                            <button className="btn-primary form-btn" onClick={saveEditKid}>
-                                                保存
-                                            </button>
-                                            <button className="btn-secondary" onClick={() => setEditingKidId(null)}>
-                                                取消
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="item-info">
-                                                <span style={{ fontSize: '1.5rem' }}>{kid.avatar}</span>
-                                                <strong>{kid.name}</strong>
-                                                <div
-                                                    style={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.2rem',
-                                                        fontWeight: 700,
-                                                        fontSize: '1rem',
-                                                        color: 'var(--primary)',
-                                                    }}
-                                                >
-                                                    <span>{kid.balance}</span>
-                                                    <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                <div className="admin-content glass-panel">
+                    {activeTab === 'kids' && (
+                        <div className="admin-section">
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                                <button className="btn-primary form-btn" onClick={() => setShowAddKid(true)}>
+                                    <Plus size={18} />添加小朋友
+                                </button>
+                            </div>
+                            <div className="list-view">
+                                {data.kids.map((kid) => (
+                                    <div key={kid.id} className="list-item">
+                                        {editingKidId === kid.id ? (
+                                            <div className="kid-edit-row">
+                                                <div className="avatar-picker-inline">
+                                                    {AVATAR_OPTIONS.slice(0, 6).map((av) => (
+                                                        <button
+                                                            key={av}
+                                                            type="button"
+                                                            className={`avatar-option-sm ${editAvatar === av ? 'selected' : ''}`}
+                                                            onClick={() => setEditAvatar(av)}
+                                                        >
+                                                            {av}
+                                                        </button>
+                                                    ))}
                                                 </div>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '0.3rem' }}>
-                                                <button
-                                                    className="btn-reward icon-btn"
-                                                    onClick={() => handleManualAdjust(kid.id, kid.name)}
-                                                    title="奖励/调整小红花"
-                                                >
-                                                    <Heart size={14} /> 奖励
+                                                <input
+                                                    type="text"
+                                                    value={editName}
+                                                    onChange={(e) => setEditName(e.target.value)}
+                                                    className="edit-name-input"
+                                                    maxLength={10}
+                                                />
+                                                <button className="btn-primary form-btn" onClick={saveEditKid}>
+                                                    保存
                                                 </button>
-                                                <button
-                                                    className="icon-btn btn-secondary"
-                                                    onClick={() => startEditKid(kid.id, kid.name, kid.avatar)}
-                                                    title="编辑"
-                                                >
-                                                    <Pencil size={14} />
-                                                </button>
-                                                <button
-                                                    className="icon-btn btn-danger"
-                                                    onClick={() => handleRemoveKid(kid.id, kid.name)}
-                                                    title="删除"
-                                                >
-                                                    <Trash2 size={14} />
+                                                <button className="btn-secondary" onClick={() => setEditingKidId(null)}>
+                                                    取消
                                                 </button>
                                             </div>
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                            {data.kids.length === 0 && <p className="text-muted">还没有小朋友，请先添加一个吧！</p>}
-                        </div>
-                    </div>
-                )}
-
-                {activeTab === 'tasks' && (
-                    <div className="admin-section">
-                        <div className="add-form">
-                            <input
-                                type="text"
-                                placeholder="任务名称 (例如：练琴半小时)"
-                                value={newTask.title}
-                                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                            />
-                            <input
-                                type="number"
-                                placeholder="奖励朵数"
-                                value={newTask.flowers}
-                                onChange={(e) => setNewTask({ ...newTask, flowers: parseInt(e.target.value) || 0 })}
-                            />
-                            <select value={newTask.type} onChange={(e) => setNewTask({ ...newTask, type: e.target.value as 'daily' | 'one-time' })}>
-                                <option value="daily">每日固定</option>
-                                <option value="one-time">一次性惊喜</option>
-                            </select>
-                            <button className="btn-primary form-btn" onClick={addTask}>
-                                <Plus size={18} />添加
-                            </button>
-                        </div>
-                        <div className="list-view">
-                            {data.tasks.map((t) => (
-                                <div key={t.id} className="list-item">
-                                    <div className="item-info">
-                                        <strong>{t.title}</strong>
-                                        <span className="badge">{t.type === 'daily' ? '每天' : '一次'}</span>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.2rem',
-                                                fontWeight: 700,
-                                                fontSize: '1rem',
-                                                color: 'var(--primary)',
-                                            }}
-                                        >
-                                            <span>+{t.flowers}</span>
-                                            <Flower size={14} color="#c96b5e" fill="#e8a99f" />
-                                        </div>
+                                        ) : (
+                                            <>
+                                                <div className="item-info">
+                                                    <span style={{ fontSize: '1.5rem' }}>{kid.avatar}</span>
+                                                    <strong>{kid.name}</strong>
+                                                    <div
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '0.2rem',
+                                                            fontWeight: 700,
+                                                            fontSize: '1rem',
+                                                            color: 'var(--primary)',
+                                                        }}
+                                                    >
+                                                        <span>{kid.balance}</span>
+                                                        <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', gap: '0.3rem' }}>
+                                                    <button
+                                                        className="btn-reward icon-btn"
+                                                        onClick={() => handleManualAdjust(kid.id, kid.name)}
+                                                        title="奖励/调整小红花"
+                                                    >
+                                                        <Heart size={14} /> 奖励
+                                                    </button>
+                                                    <button
+                                                        className="icon-btn btn-secondary"
+                                                        onClick={() => startEditKid(kid.id, kid.name, kid.avatar)}
+                                                        title="编辑"
+                                                    >
+                                                        <Pencil size={14} />
+                                                    </button>
+                                                    <button
+                                                        className="icon-btn btn-danger"
+                                                        onClick={() => handleRemoveKid(kid.id, kid.name)}
+                                                        title="删除"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
-                                    <button className="btn-danger icon-btn" onClick={() => removeTask(t.id)}>
-                                        <Trash2 size={16} />
-                                    </button>
-                                </div>
-                            ))}
-                            {data.tasks.length === 0 && <p className="text-muted">还没有任务，快添加一个吧！</p>}
+                                ))}
+                                {data.kids.length === 0 && <p className="text-muted">还没有小朋友，请先添加一个吧！</p>}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                {activeTab === 'rewards' && (
-                    <div className="admin-section">
-                        <div className="add-form">
-                            <input
-                                type="text"
-                                placeholder="图标 Emoji"
-                                style={{ width: '90px', flex: 'none' }}
-                                value={newReward.emoji}
-                                onChange={(e) => setNewReward({ ...newReward, emoji: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="奖品名称 (例如：一次游乐园)"
-                                value={newReward.title}
-                                onChange={(e) => setNewReward({ ...newReward, title: e.target.value })}
-                            />
-                            <input
-                                type="number"
-                                placeholder="花费朵数"
-                                value={newReward.cost}
-                                onChange={(e) => setNewReward({ ...newReward, cost: parseInt(e.target.value) || 0 })}
-                            />
-                            <button className="btn-primary form-btn" onClick={addReward}>
-                                <Plus size={18} />添加
-                            </button>
-                        </div>
-                        <div className="list-view">
-                            {data.rewards.map((r) => (
-                                <div key={r.id} className="list-item">
-                                    <div className="item-info">
-                                        <span style={{ fontSize: '1.1rem' }}>{r.emoji}</span>
-                                        <strong>{r.title}</strong>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.2rem',
-                                                fontWeight: 700,
-                                                fontSize: '1rem',
-                                                color: 'var(--primary)',
-                                            }}
-                                        >
-                                            <span>{r.cost}</span>
-                                            <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                    {activeTab === 'tasks' && (
+                        <div className="admin-section">
+                            <div className="add-form">
+                                <input
+                                    type="text"
+                                    placeholder="任务名称 (例如：练琴半小时)"
+                                    value={newTask.title}
+                                    onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    placeholder="奖励朵数"
+                                    value={newTask.flowers}
+                                    onChange={(e) => setNewTask({ ...newTask, flowers: parseInt(e.target.value) || 0 })}
+                                />
+                                <select value={newTask.type} onChange={(e) => setNewTask({ ...newTask, type: e.target.value as 'daily' | 'one-time' })}>
+                                    <option value="daily">每日固定</option>
+                                    <option value="one-time">一次性惊喜</option>
+                                </select>
+                                <button className="btn-primary form-btn" onClick={addTask}>
+                                    <Plus size={18} />添加
+                                </button>
+                            </div>
+                            <div className="list-view">
+                                {data.tasks.map((t) => (
+                                    <div key={t.id} className="list-item">
+                                        <div className="item-info">
+                                            <strong>{t.title}</strong>
+                                            <span className="badge">{t.type === 'daily' ? '每天' : '一次'}</span>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.2rem',
+                                                    fontWeight: 700,
+                                                    fontSize: '1rem',
+                                                    color: 'var(--primary)',
+                                                }}
+                                            >
+                                                <span>+{t.flowers}</span>
+                                                <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                                            </div>
                                         </div>
+                                        <button className="btn-danger icon-btn" onClick={() => removeTask(t.id)}>
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
-                                    <button className="btn-danger icon-btn" onClick={() => removeReward(r.id)}>
-                                        <Trash2 size={16} />
-                                    </button>
-                                </div>
-                            ))}
-                            {data.rewards.length === 0 && <p className="text-muted">还没设置奖品哦</p>}
+                                ))}
+                                {data.tasks.length === 0 && <p className="text-muted">还没有任务，快添加一个吧！</p>}
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
 
-            <div className={`parenting-tips glass-panel ${showTips ? 'expanded' : ''}`}>
-                <button className="tips-toggle" onClick={() => setShowTips(!showTips)}>
-                    <span className="tips-toggle-label">
-                        <Lightbulb size={16} /> 育儿小贴士：任务 vs 闪光奖励
-                    </span>
-                    <ChevronDown size={16} className={`tips-chevron ${showTips ? 'open' : ''}`} />
-                </button>
-                {showTips && (
-                    <div className="tips-content">
-                        <div className="tip-card tip-task">
-                            <h4>🎯 任务模式：培养新习惯的“练习轮”</h4>
-                            <p>适合孩子还没有形成某个习惯时使用，比如刚开始学习自己整理书包、每天阅读。明确的任务和即时反馈能帮助孩子建立行为框架。</p>
-                            <p className="tip-advice">✨ <strong>小贴士</strong>：当孩子已经能自觉完成某件事时，及时从任务里移除它，让它变成“理所当然”而不是“为了奖励”。需要避免孩子产生“没奖励就不做”的心态。</p>
+                    {activeTab === 'rewards' && (
+                        <div className="admin-section">
+                            <div className="add-form">
+                                <input
+                                    type="text"
+                                    placeholder="图标 Emoji"
+                                    style={{ width: '90px', flex: 'none' }}
+                                    value={newReward.emoji}
+                                    onChange={(e) => setNewReward({ ...newReward, emoji: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="奖品名称 (例如：一次游乐园)"
+                                    value={newReward.title}
+                                    onChange={(e) => setNewReward({ ...newReward, title: e.target.value })}
+                                />
+                                <input
+                                    type="number"
+                                    placeholder="花费朵数"
+                                    value={newReward.cost}
+                                    onChange={(e) => setNewReward({ ...newReward, cost: parseInt(e.target.value) || 0 })}
+                                />
+                                <button className="btn-primary form-btn" onClick={addReward}>
+                                    <Plus size={18} />添加
+                                </button>
+                            </div>
+                            <div className="list-view">
+                                {data.rewards.map((r) => (
+                                    <div key={r.id} className="list-item">
+                                        <div className="item-info">
+                                            <span style={{ fontSize: '1.1rem' }}>{r.emoji}</span>
+                                            <strong>{r.title}</strong>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.2rem',
+                                                    fontWeight: 700,
+                                                    fontSize: '1rem',
+                                                    color: 'var(--primary)',
+                                                }}
+                                            >
+                                                <span>{r.cost}</span>
+                                                <Flower size={14} color="#c96b5e" fill="#e8a99f" />
+                                            </div>
+                                        </div>
+                                        <button className="btn-danger icon-btn" onClick={() => removeReward(r.id)}>
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
+                                ))}
+                                {data.rewards.length === 0 && <p className="text-muted">还没设置奖品哦</p>}
+                            </div>
                         </div>
-                        <div className="tip-card tip-shining">
-                            <h4>✨ 闪光奖励：发现孩子的“宝藏时刻”</h4>
-                            <p>当你随机看到孩子的好行为时，随手奖励几朵小红花。孩子不知道什么时候会得到奖励，因此不会“为了嬌花而表演”，而是自然地做自己。</p>
-                            <p className="tip-advice">🌱 <strong>小贴士</strong>：心理学研究表明，不可预测的正面反馈是最持久的激励方式。孩子会因为“被看见”而建立内在自驱力。</p>
+                    )}
+                </div>
+
+                <div className={`parenting-tips glass-panel ${showTips ? 'expanded' : ''}`}>
+                    <button className="tips-toggle" onClick={() => setShowTips(!showTips)}>
+                        <span className="tips-toggle-label">
+                            <Lightbulb size={16} /> 育儿小贴士：任务 vs 闪光奖励
+                        </span>
+                        <ChevronDown size={16} className={`tips-chevron ${showTips ? 'open' : ''}`} />
+                    </button>
+                    {showTips && (
+                        <div className="tips-content">
+                            <div className="tip-card tip-task">
+                                <h4>🎯 任务模式：培养新习惯的“练习轮”</h4>
+                                <p>适合孩子还没有形成某个习惯时使用，比如刚开始学习自己整理书包、每天阅读。明确的任务和即时反馈能帮助孩子建立行为框架。</p>
+                                <p className="tip-advice">✨ <strong>小贴士</strong>：当孩子已经能自觉完成某件事时，及时从任务里移除它，让它变成“理所当然”而不是“为了奖励”。需要避免孩子产生“没奖励就不做”的心态。</p>
+                            </div>
+                            <div className="tip-card tip-shining">
+                                <h4>✨ 闪光奖励：发现孩子的“宝藏时刻”</h4>
+                                <p>当你随机看到孩子的好行为时，随手奖励几朵小红花。孩子不知道什么时候会得到奖励，因此不会“为了嬌花而表演”，而是自然地做自己。</p>
+                                <p className="tip-advice">🌱 <strong>小贴士</strong>：心理学研究表明，不可预测的正面反馈是最持久的激励方式。孩子会因为“被看见”而建立内在自驱力。</p>
+                            </div>
+                            <p className="tips-summary">💡 两种方式可以同时使用：用任务培养新习惯，用闪光奖励肯定好行为。当习惯已经养成，就从任务里移除，留给孩子自由生长的空间。</p>
                         </div>
-                        <p className="tips-summary">💡 两种方式可以同时使用：用任务培养新习惯，用闪光奖励肯定好行为。当习惯已经养成，就从任务里移除，留给孩子自由生长的空间。</p>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
             {showAddKid && (
@@ -595,6 +597,6 @@ export const ParentAdmin: React.FC<Props> = ({ onBack }) => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
